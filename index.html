@@ -1,0 +1,1170 @@
+<html>
+<body>
+
+1)python program to print multiplication of given number.
+ans
+   number = int(input("Enter a number: "))
+
+print(f"\nMultiplication Table for {number}:\n")
+
+for i in range(1, 11):
+    result = number * i
+    print(f"{number} x {i} = {result}")
+
+
+2)Program to check whether given no is prime or not.
+ans
+   def is_prime(number):
+    if number <= 1:
+        return False
+    for i in range(2, int(number**0.5) + 1):
+        if number % i == 0:
+            return False
+    return True
+
+# Input from the user
+num = int(input("Enter a number: "))
+
+# Check if the number is prime
+if is_prime(num):
+    print(f"{num} is a prime number.")
+else:
+    print(f"{num} is not a prime number.")
+
+
+Q.3  Write a program To implement Simple Chatbot.
+ans
+   
+import random
+
+def simple_chatbot(user_input):
+    greetings = ["hello", "hi", "hey", "greetings"]
+    farewells = ["goodbye", "bye", "see you", "take care"]
+
+    user_input = user_input.lower()
+
+    if any(greeting in user_input for greeting in greetings):
+        return "Hello! How can I assist you today?"
+
+    elif any(farewell in user_input for farewell in farewells):
+        return "Goodbye! Have a great day."
+
+    else:
+        return "I'm just a simple chatbot. How can I help you?"
+
+def main():
+    print("Simple Chatbot: Hello! Type 'exit' to end the conversation.")
+
+    while True:
+        user_input = input("You: ")
+        
+        if user_input.lower() == 'exit':
+            print("Simple Chatbot: Goodbye! Have a great day.")
+            break
+
+        response = simple_chatbot(user_input)
+        print("Simple Chatbot:", response)
+
+if __name__ == "__main__":
+    main()
+
+
+Q.4 Write a Program to implement code in BFS:
+
+
+from collections import deque
+
+def bfs(graph, start):
+    visited = set()
+    queue = deque([start])
+    visited.add(start)
+
+    while queue:
+        current_node = queue.popleft()
+        print(current_node, end=" ")
+
+        for neighbor in graph[current_node]:
+            if neighbor not in visited:
+                queue.append(neighbor)
+                visited.add(neighbor)
+
+# Example graph represented as an adjacency list
+graph = {
+    5: [3, 7],
+    3: [2, 4],
+    7: [8],
+    2: [],
+    4: [],
+    8: []
+}
+
+# Starting BFS from node 5
+print("BFS starting from node 5:")
+bfs(graph, 5)
+
+
+Q.6  Write a Program to implement code in Water Jug Problem.
+
+from collections import deque
+
+def water_jug_bfs(capacity_jug1, capacity_jug2, target):
+    visited_states = set()
+    queue = deque([(0, 0)])
+
+    while queue:
+        current_state = queue.popleft()
+        jug1, jug2 = current_state
+
+        if current_state == target:
+            print("Solution found:")
+            print_path(current_state)
+            return
+
+        visited_states.add(current_state)
+
+        # Fill jug 1
+        fill_jug1 = (capacity_jug1, jug2)
+        enqueue_if_unvisited(fill_jug1, visited_states, queue)
+
+        # Fill jug 2
+        fill_jug2 = (jug1, capacity_jug2)
+        enqueue_if_unvisited(fill_jug2, visited_states, queue)
+
+        # Empty jug 1
+        empty_jug1 = (0, jug2)
+        enqueue_if_unvisited(empty_jug1, visited_states, queue)
+
+        # Empty jug 2
+        empty_jug2 = (jug1, 0)
+        enqueue_if_unvisited(empty_jug2, visited_states, queue)
+
+        # Pour water from jug 1 to jug 2
+        pour_jug1_to_jug2 = (
+            max(0, jug1 - (capacity_jug2 - jug2)),
+            min(capacity_jug2, jug1 + jug2)
+        )
+        enqueue_if_unvisited(pour_jug1_to_jug2, visited_states, queue)
+
+        # Pour water from jug 2 to jug 1
+        pour_jug2_to_jug1 = (
+            min(capacity_jug1, jug1 + jug2),
+            max(0, jug2 - (capacity_jug1 - jug1))
+        )
+        enqueue_if_unvisited(pour_jug2_to_jug1, visited_states, queue)
+
+def enqueue_if_unvisited(state, visited, queue):
+    if state not in visited:
+        queue.append(state)
+
+def print_path(final_state):
+    path = []
+    current_state = final_state
+    while current_state != (0, 0):
+        path.append(current_state)
+        current_state = previous_state[current_state]
+    path.append((0, 0))
+    path.reverse()
+
+    for state in path:
+        print(state)
+
+# Example usage
+capacity_jug1 = 4
+capacity_jug2 = 3
+target = (2, 0)
+
+previous_state = {}
+water_jug_bfs(capacity_jug1, capacity_jug2, target)
+
+
+Q.7 Write a Program to implement k-nearest neighbor algorithm.
+ans
+    from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
+
+# Load the Iris dataset
+iris = load_iris()
+X = iris.data
+y = iris.target
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create a KNN classifier with k=3
+knn_classifier = KNeighborsClassifier(n_neighbors=3)
+
+# Train the model
+knn_classifier.fit(X_train, y_train)
+
+# Make predictions on the test set
+y_pred = knn_classifier.predict(X_test)
+
+# Calculate accuracy
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Accuracy: {accuracy:.2f}")
+
+
+
+Q.8  Write a Program to implement Regression algorithm.
+ans
+  import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+import matplotlib.pyplot as plt
+
+# Generate synthetic data
+np.random.seed(42)
+X = 2 * np.random.rand(100, 1)
+y = 4 + 3 * X + np.random.randn(100, 1)
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create a linear regression model
+model = LinearRegression()
+
+# Train the model
+model.fit(X_train, y_train)
+
+# Make predictions on the test set
+y_pred = model.predict(X_test)
+
+# Evaluate the model
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+print(f'Mean Squared Error: {mse:.2f}')
+print(f'R-squared: {r2:.2f}')
+
+# Plot the regression line
+plt.scatter(X_test, y_test, color='black', label='Actual')
+plt.plot(X_test, y_pred, color='blue', linewidth=3, label='Regression Line')
+plt.xlabel('X')
+plt.ylabel('y')
+plt.legend()
+plt.show()
+
+
+
+
+Q.9 Implementing the Hill Climbing Algorithm in Python
+ans
+    import random
+import numpy as np
+
+# Coordinates of the points/cities
+coordinate = np.array([[1,2], [30,21], [56,23], [8,18], [20,50], [3,4], [11,6], [6,7], [15,20], [10,9], [12,12]])
+
+# Generate distance matrix for a weighted graph based on the given coordinates
+def generate_matrix(coordinate):
+    matrix = []
+    for i in range(len(coordinate)):
+        for j in range(len(coordinate)):
+            p = np.linalg.norm(coordinate[i] - coordinate[j])
+            matrix.append(p)
+    matrix = np.reshape(matrix, (len(coordinate), len(coordinate)))
+    return matrix
+
+# Find a random solution
+def solution(matrix):
+    points = list(range(len(matrix)))
+    solution = []
+    for i in range(len(matrix)):
+        random_point = points[random.randint(0, len(points) - 1)]
+        solution.append(random_point)
+        points.remove(random_point)
+    return solution
+
+# Calculate the path based on the random solution
+def path_length(matrix, solution):
+    cycle_length = 0
+    for i in range(len(solution)):
+        cycle_length += matrix[solution[i]][solution[i - 1]]
+    return cycle_length
+
+# Generate neighbors of the current solution by swapping cities and return the best neighbor
+def neighbors(matrix, solution):
+    neighbors = []
+    for i in range(len(solution)):
+        for j in range(i + 1, len(solution)):
+            neighbor = solution.copy()
+            neighbor[i] = solution[j]
+            neighbor[j] = solution[i]
+            neighbors.append(neighbor)
+
+    # Assume that the first neighbor in the list is the best neighbor
+    best_neighbor = neighbors[0]
+    best_path = path_length(matrix, best_neighbor)
+
+    # Check if there is a better neighbor
+    for neighbor in neighbors:
+        current_path = path_length(matrix, neighbor)
+        if current_path < best_path:
+            best_path = current_path
+            best_neighbor = neighbor
+    return best_neighbor, best_path
+
+def hill_climbing(coordinate):
+    matrix = generate_matrix(coordinate)
+
+    current_solution = solution(matrix)
+    current_path = path_length(matrix, current_solution)
+    neighbor = neighbors(matrix, current_solution)[0]
+    best_neighbor, best_neighbor_path = neighbors(matrix, neighbor)
+
+    while best_neighbor_path < current_path:
+        current_solution = best_neighbor
+        current_path = best_neighbor_path
+        neighbor = neighbors(matrix, current_solution)[0]
+        best_neighbor, best_neighbor_path = neighbors(matrix, neighbor)
+
+    return current_path, current_solution
+
+final_solution = hill_climbing(coordinate)
+print("The solution is \n", final_solution[1])
+print("Path length:", final_solution[0]
+
+
+
+Q.10  Write a python program to generate Calendar for the given month and year?.
+ans  
+     import calendar
+
+def generate_calendar(year, month):
+    # Generate the calendar for the given month and year
+    cal = calendar.monthcalendar(year, month)
+
+    # Print the calendar
+    print(f"Calendar for {calendar.month_name[month]} {year}:\n")
+    print("Mo Tu We Th Fr Sa Su")
+
+    for week in cal:
+        for day in week:
+            if day == 0:
+                print("   ", end=" ")
+            else:
+                print(f"{day:2} ", end=" ")
+        print()
+
+# Input from the user
+year = int(input("Enter the year: "))
+month = int(input("Enter the month (1-12): "))
+
+# Call the function to generate and print the calendar
+generate_calendar(year, month)
+
+
+Q.11 Python Program to Remove Punctuation from a String
+ans
+   import string
+
+def remove_punctuation(input_string):
+    # Create a translation table to remove punctuation
+    translator = str.maketrans("", "", string.punctuation)
+    
+    # Use translate() to remove punctuation from the input string
+    result_string = input_string.translate(translator)
+    
+    return result_string
+
+# Example usage:
+input_string = "Hello, World! This is an example string with some punctuation."
+result = remove_punctuation(input_string)
+
+print("Original String:", input_string)
+print("String without Punctuation:", result)
+
+
+Q12  Write a program to implement Hangman game using python. 
+ans
+    import time
+import random
+name = input("What is your name? ")
+print ("Hello, " + name, "Time to play hangman!")
+time.sleep(1)
+print ("Start guessing...\n")
+time.sleep(0.5)
+## A List Of Secret Words
+words = ['python','programming','treasure','creative','medium','horror']
+word = random.choice(words)
+guesses = ''
+turns = 5
+while turns > 0:         
+    failed = 0             
+    for char in word:      
+        if char in guesses:    
+            print (char,end="")    
+        else:
+            print ("_",end=""),     
+            failed += 1    
+    if failed == 0:        
+        print ("\nYou won") 
+        break              
+    guess = input("\nguess a character:") 
+    guesses += guess                    
+    if guess not in word:  
+        turns -= 1        
+        print("\nWrong")    
+        print("\nYou have", + turns, 'more guesses') 
+        if turns == 0:           
+            print ("\nYou Lose")
+
+
+
+Q.13 Write a python program to implement Lemmatization using NLTK
+ans
+  import nltknltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('wordnet')
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.stem import SnowballStemmer
+text = 'Jim has an engineering background and he works as project manager! Before he was working as a developer in a software company'
+snow = SnowballStemmer('english')stemmed_sentence = []
+# Word Tokenizer
+words = word_tokenize(text)
+for w in words:
+    # Apply Stemming
+    stemmed_sentence.append(snow.stem(w))
+stemmed_text = " ".join(stemmed_sentence)
+ 
+stemmed_text
+
+Output—
+'jim has an engin background and he work as project manag ! befor he was work as a develop in a softwar compani'
+
+
+
+
+Q.14 Write a python program to remove stop words for a given passage from a text file using NLTK?. 
+ans
+  
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+
+nltk.download('stopwords')
+nltk.download('punkt')
+
+def remove_stopwords_from_file(file_path):
+    # Read the content of the file
+    with open(file_path, 'r', encoding='utf-8') as file:
+        passage = file.read()
+
+    # Tokenize the passage
+    words = word_tokenize(passage)
+
+    # Remove stop words
+    stop_words = set(stopwords.words('english'))
+    filtered_words = [word for word in words if word.lower() not in stop_words]
+
+    # Join the filtered words back into a passage
+    filtered_passage = " ".join(filtered_words)
+
+    return filtered_passage
+
+# Example usage:
+file_path = 'your_text_file.txt'  # Replace with the path to your text file
+filtered_passage = remove_stopwords_from_file(file_path)
+
+print("Original Passage:")
+with open(file_path, 'r', encoding='utf-8') as file:
+    original_passage = file.read()
+    print(original_passage)
+
+print("\nPassage after removing stop words:")
+print(filtered_passage)
+  
+  
+  output:
+
+        Original Passage:
+This is a sample text file. It contains some stop words that need to be removed.
+NLTK is a powerful tool for natural language processing.
+Stop words are common words such as 'the', 'and', 'is', etc.
+
+Passage after removing stop words:
+This sample text file . It contains stop words need removed . NLTK powerful tool natural language processing . Stop words common words ' , ' , ' , ' , etc .
+
+   
+
+ Q.15  Write a python program implement tic-tac-toe using alpha beta pruning.
+ans.
+   import math
+
+# Constants for representing the players and empty cells
+EMPTY = "-"
+PLAYER_X = "X"
+PLAYER_O = "O"
+
+# The game board
+board = [EMPTY, EMPTY, EMPTY,
+         EMPTY, EMPTY, EMPTY,
+         EMPTY, EMPTY, EMPTY]
+
+# Function to print the game board
+def print_board(board):
+    print("---------")
+    for i in range(3):
+        print("|", board[i*3], "|", board[i*3 + 1], "|", board[i*3 + 2], "|")
+        print("---------")
+
+# Function to check if a player has won
+def check_winner(board):
+    winning_combinations = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],  # rows
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],  # columns
+        [0, 4, 8], [2, 4, 6]  # diagonals
+    ]
+    
+    for combination in winning_combinations:
+        if board[combination[0]] == board[combination[1]] == board[combination[2]] != EMPTY:
+            return board[combination[0]]
+    
+    if EMPTY not in board:
+        return "tie"
+    
+    return None
+
+# Function to evaluate the game board
+def evaluate(board):
+    winner = check_winner(board)
+    
+    if winner == PLAYER_X:
+        return 1
+    elif winner == PLAYER_O:
+        return -1
+    else:
+        return 0
+
+# Minimax function with alpha-beta pruning
+def minimax(board, depth, alpha, beta, maximizing_player):
+    if check_winner(board) is not None or depth == 0:
+        return evaluate(board)
+    
+    if maximizing_player:
+        max_eval = -math.inf
+        for i in range(9):
+            if board[i] == EMPTY:
+                board[i] = PLAYER_X
+                eval_score = minimax(board, depth - 1, alpha, beta, False)
+                board[i] = EMPTY
+                max_eval = max(max_eval, eval_score)
+                alpha = max(alpha, eval_score)
+                if beta <= alpha:
+                    break
+        return max_eval
+    else:
+        min_eval = math.inf
+        for i in range(9):
+            if board[i] == EMPTY:
+                board[i] = PLAYER_O
+                eval_score = minimax(board, depth - 1, alpha, beta, True)
+                board[i] = EMPTY
+                min_eval = min(min_eval, eval_score)
+                beta = min(beta, eval_score)
+                if beta <= alpha:
+                    break
+        return min_eval
+
+# Function to find the best move using minimax with alpha-beta pruning
+def find_best_move(board):
+    best_score = -math.inf
+    best_move = None
+    
+    for i in range(9):
+        if board[i] == EMPTY:
+            board[i] = PLAYER_X
+            move_score = minimax(board, 9, -math.inf, math.inf, False)
+            board[i] = EMPTY
+            
+            if move_score > best_score:
+                best_score = move_score
+                best_move = i
+    
+    return best_move
+
+# Main game loop
+while True:
+    print_board(board)
+    winner = check_winner(board)
+    
+    if winner is not None:
+        if winner == "tie":
+            print("It's a tie!")
+        else:
+            print("Player", winner, "wins!")
+        break
+    
+    if len([cell for cell in board if cell != EMPTY]) % 2 == 0:
+        # Player O's turn
+        while True:
+            move = int(input("Enter O's move (0-8): "))
+            if board[move] == EMPTY:
+                board[move] = PLAYER_O
+                break
+            else:
+                print("Invalid move! Try again.")
+    else:
+        # Player X's turn
+        move = find_best_move(board)
+        board[move] = PLAYER_X
+
+
+ 
+Q.16 Write a Python program to accept a string. Find and print the number of upper case alphabets and lower case alphabets.
+ans
+   def count_upper_lower(input_string):
+    # Initialize counters
+    upper_count = 0
+    lower_count = 0
+
+    # Iterate through each character in the string
+    for char in input_string:
+        # Check if the character is an upper-case alphabet
+        if char.isupper():
+            upper_count += 1
+        # Check if the character is a lower-case alphabet
+        elif char.islower():
+            lower_count += 1
+
+    # Print the results
+    print("Number of upper-case alphabets:", upper_count)
+    print("Number of lower-case alphabets:", lower_count)
+
+# Accept a string from the user
+user_input = input("Enter a string: ")
+count_upper_lower(user_input)
+
+Q17  Write a Python program to solve tic-tac-toe problem.
+ans 
+   
+import numpy as np
+import random
+from time import sleep
+
+def create_board():
+    return np.zeros((3, 3), dtype=int)
+
+def possibilities(board):
+    return list(zip(*np.where(board == 0)))
+
+def random_place(board, player):
+    selection = possibilities(board)
+    if selection:
+        move = random.choice(selection)
+        board[move] = player
+    return board
+
+def evaluate(board):
+    for player in [1, 2]:
+        if (np.any(np.all(board == player, axis=0)) or
+            np.any(np.all(board == player, axis=1)) or
+            np.all(np.diagonal(board) == player) or
+            np.all(np.diagonal(np.fliplr(board)) == player)):
+            return player
+    return -1 if np.all(board != 0) else 0
+
+def print_board(board):
+    for row in board:
+        print(" | ".join(map(str, row)))
+        print("-" * 9)
+
+def play_game():
+    board, winner, counter = create_board(), 0, 1
+    print_board(board)
+    sleep(2)
+
+    while winner == 0:
+        for player in [1, 2]:
+            board = random_place(board, player)
+            print(f"\nBoard after {counter} move:")
+            print_board(board)
+            sleep(2)
+            winner = evaluate(board)
+            if winner != 0:
+                break
+            counter += 1
+
+    return winner
+
+# Driver Code
+print("\nWinner is:", play_game())
+
+
+Q.18  Write a Program to Implement Tower of Hanoi using Python. 
+ans
+   def tower_of_hanoi(n, source_peg, target_peg, auxiliary_peg):
+    if n == 1:
+        print(f"Move disk 1 from {source_peg} to {target_peg}")
+        return
+    tower_of_hanoi(n - 1, source_peg, auxiliary_peg, target_peg)
+    print(f"Move disk {n} from {source_peg} to {target_peg}")
+    tower_of_hanoi(n - 1, auxiliary_peg, target_peg, source_peg)
+
+# Driver Code
+number_of_disks = int(input("Enter the number of disks: "))
+tower_of_hanoi(number_of_disks, 'A', 'C', 'B')
+
+
+
+Q.20  Write a python program to sort the sentence in alphabetical order.
+ans
+def sort_sentence_alphabetically(sentence):
+    # Split the sentence into words
+    words = sentence.split()
+
+    # Sort the words alphabetically
+    sorted_words = sorted(words)
+
+    # Join the sorted words to form the sorted sentence
+    sorted_sentence = ' '.join(sorted_words)
+
+    return sorted_sentence
+
+# Input: Get a sentence from the user
+user_sentence = input("Enter a sentence: ")
+
+# Process and output: Sort the sentence alphabetically
+sorted_sentence = sort_sentence_alphabetically(user_sentence)
+print("Sorted Sentence:", sorted_sentence)
+
+Q21 slove 8-puzzle problem
+ans
+   import heapq
+import numpy as np
+
+class PuzzleNode:
+    def __init__(self, state, parent=None, action=None, cost=0, heuristic=0):
+        self.state = state
+        self.parent = parent
+        self.action = action
+        self.cost = cost
+        self.heuristic = heuristic
+
+    def __lt__(self, other):
+        return (self.cost + self.heuristic) < (other.cost + other.heuristic)
+
+def get_blank_position(state):
+    return np.where(state == 0)
+
+def get_neighbors(state):
+    blank_position = get_blank_position(state)
+    neighbors = []
+
+    for move in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
+        new_position = (blank_position[0] + move[0], blank_position[1] + move[1])
+
+        if 0 <= new_position[0] < 3 and 0 <= new_position[1] < 3:
+            neighbor_state = state.copy()
+            neighbor_state[blank_position], neighbor_state[new_position] = neighbor_state[new_position], neighbor_state[blank_position]
+            neighbors.append(neighbor_state)
+
+    return neighbors
+
+def manhattan_distance(state, goal_state):
+    distance = 0
+    for i in range(1, 9):
+        current_position = np.where(state == i)
+        goal_position = np.where(goal_state == i)
+        distance += abs(current_position[0] - goal_position[0]) + abs(current_position[1] - goal_position[1])
+    return distance
+
+def solve_8_puzzle(initial_state, goal_state):
+    initial_node = PuzzleNode(initial_state, None, None, 0, manhattan_distance(initial_state, goal_state))
+    priority_queue = [initial_node]
+    visited_states = set()
+
+    while priority_queue:
+        current_node = heapq.heappop(priority_queue)
+
+        if np.array_equal(current_node.state, goal_state):
+            # Goal state reached
+            return reconstruct_path(current_node)
+
+        visited_states.add(tuple(current_node.state.flatten()))
+
+        for neighbor_state in get_neighbors(current_node.state):
+            if tuple(neighbor_state.flatten()) not in visited_states:
+                neighbor_node = PuzzleNode(neighbor_state, current_node, None, current_node.cost + 1, manhattan_distance(neighbor_state, goal_state))
+                heapq.heappush(priority_queue, neighbor_node)
+
+    return None  # No solution found
+
+def reconstruct_path(node):
+    path = []
+    while node:
+        path.append(node.state)
+        node = node.parent
+    return path[::-1]
+
+def print_puzzle(puzzle):
+    for row in puzzle:
+        print(" ".join(map(str, row)))
+    print()
+
+# Example usage:
+initial_state = np.array([[1, 2, 3], [4, 5, 6], [0, 7, 8]])
+goal_state = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 0]])
+
+solution_path = solve_8_puzzle(initial_state, goal_state)
+
+if solution_path:
+    print("Solution Found!")
+    for step, state in enumerate(solution_path):
+        print(f"Step {step + 1}:")
+        print_puzzle(state)
+else:
+    print("No solution found.")
+
+
+
+Q.22 Write a Python program for the following Cryptorithmetic problems
+ans
+def isSolvable(words, result):
+    # Stores the value
+    # assigned to alphabets
+    mp = [-1]*(26)
+     
+    # Stores if a number
+    # is assigned to any
+    # character or not
+    used = [0]*(10)
+ 
+    # Stores the sum of position
+    # value of a character
+    # in every string
+    Hash = [0]*(26)
+ 
+    # Stores if a character
+    # is at index 0 of any
+    # string
+    CharAtfront = [0]*(26)
+ 
+    # Stores the string formed
+    # by concatenating every
+    # occurred character only
+    # once
+    uniq = ""
+ 
+    # Iterator over the array,
+    # words
+    for word in range(len(words)):
+        # Iterate over the string,
+        # word
+        for i in range(len(words[word])):
+            # Stores the character
+            # at ith position
+            ch = words[word][i]
+ 
+            # Update Hash[ch-'A]
+            Hash[ord(ch) - ord('A')] += pow(10, len(words[word]) - i - 1)
+ 
+            # If mp[ch-'A'] is -1
+            if mp[ord(ch) - ord('A')] == -1:
+                mp[ord(ch) - ord('A')] = 0
+                uniq += str(ch)
+ 
+            # If i is 0 and word
+            # length is greater
+            # than 1
+            if i == 0 and len(words[word]) > 1:
+                CharAtfront[ord(ch) - ord('A')] = 1
+ 
+    # Iterate over the string result
+    for i in range(len(result)):
+        ch = result[i]
+ 
+        Hash[ord(ch) - ord('A')] -= pow(10, len(result) - i - 1)
+ 
+        # If mp[ch-'A] is -1
+        if mp[ord(ch) - ord('A')] == -1:
+            mp[ord(ch) - ord('A')] = 0
+            uniq += str(ch)
+ 
+        # If i is 0 and length of
+        # result is greater than 1
+        if i == 0 and len(result) > 1:
+            CharAtfront[ord(ch) - ord('A')] = 1
+ 
+    mp = [-1]*(26)
+ 
+    # Recursive call of the function
+    return True
+ 
+# Auxiliary Recursive function
+# to perform backtracking
+def solve(words, i, S, mp, used, Hash, CharAtfront):
+    # If i is word.length
+    if i == len(words):
+        # Return true if S is 0
+        return S == 0
+ 
+    # Stores the character at
+    # index i
+    ch = words[i]
+ 
+    # Stores the mapped value
+    # of ch
+    val = mp[ord(words[i]) - ord('A')]
+ 
+    # If val is not -1
+    if val != -1:
+        # Recursion
+        return solve(words, i + 1, S + val * Hash[ord(ch) - ord('A')], mp, used, Hash, CharAtfront)
+ 
+    # Stores if there is any
+    # possible solution
+    x = False
+ 
+    # Iterate over the range
+    for l in range(10):
+        # If CharAtfront[ch-'A']
+        # is true and l is 0
+        if CharAtfront[ord(ch) - ord('A')] == 1 and l == 0:
+            continue
+ 
+        # If used[l] is true
+        if used[l] == 1:
+            continue
+ 
+        # Assign l to ch
+        mp[ord(ch) - ord('A')] = l
+ 
+        # Marked l as used
+        used[l] = 1
+ 
+        # Recursive function call
+        x |= solve(words, i + 1, S + l * Hash[ord(ch) - ord('A')], mp, used, Hash, CharAtfront)
+ 
+        # Backtrack
+        mp[ord(ch) - ord('A')] = -1
+ 
+        # Unset used[l]
+        used[l] = 0
+ 
+    # Return the value of x;
+    return x
+ 
+arr = [ "SIX", "SEVEN", "SEVEN" ]
+S = "TWENTY"
+ 
+# Function Call
+if isSolvable(arr, S):
+    print("no")
+else:
+    print("yes")
+
+
+
+Q.23 Write a Python program to implement Mini-Max Algorithm.
+ans
+import math
+
+def minimax(curDepth, nodeIndex, maxTurn, scores, targetDepth):
+    if curDepth == targetDepth:
+        return scores[nodeIndex]
+
+    if maxTurn:
+        return max(
+            minimax(curDepth + 1, nodeIndex * 2, False, scores, targetDepth),
+            minimax(curDepth + 1, nodeIndex * 2 + 1, False, scores, targetDepth)
+        )
+    else:
+        return min(
+            minimax(curDepth + 1, nodeIndex * 2, True, scores, targetDepth),
+            minimax(curDepth + 1, nodeIndex * 2 + 1, True, scores, targetDepth)
+        )
+
+# Example usage:
+scores = [3, 5, 2, 9, 12, 5, 23, 23]
+treeDepth = math.log2(len(scores))
+print("The optimal value is:", end=" ")
+print(minimax(0, 0, True, scores, treeDepth))
+
+
+Q.24 Write a Python program to implement A* algorithm.
+ans
+def aStarAlgo(start_node, stop_node):
+         
+        open_set = set(start_node) 
+        closed_set = set()
+        g = {} #store distance from starting node
+        parents = {}# parents contains an adjacency map of all nodes
+ 
+        #ditance of starting node from itself is zero
+        g[start_node] = 0
+        #start_node is root node i.e it has no parent nodes
+        #so start_node is set to its own parent node
+        parents[start_node] = start_node
+         
+         
+        while len(open_set) > 0:
+            n = None
+ 
+            #node with lowest f() is found
+            for v in open_set:
+                if n == None or g[v] + heuristic(v) < g[n] + heuristic(n):
+                    n = v
+             
+                     
+            if n == stop_node or Graph_nodes[n] == None:
+                pass
+            else:
+                for (m, weight) in get_neighbors(n):
+                    #nodes 'm' not in first and last set are added to first
+                    #n is set its parent
+                    if m not in open_set and m not in closed_set:
+                        open_set.add(m)
+                        parents[m] = n
+                        g[m] = g[n] + weight
+                         
+     
+                    #for each node m,compare its distance from start i.e g(m) to the
+                    #from start through n node
+                    else:
+                        if g[m] > g[n] + weight:
+                            #update g(m)
+                            g[m] = g[n] + weight
+                            #change parent of m to n
+                            parents[m] = n
+                             
+                            #if m in closed set,remove and add to open
+                            if m in closed_set:
+                                closed_set.remove(m)
+                                open_set.add(m)
+ 
+            if n == None:
+                print('Path does not exist!')
+                return None
+ 
+            # if the current node is the stop_node
+            # then we begin reconstructin the path from it to the start_node
+            if n == stop_node:
+                path = []
+ 
+                while parents[n] != n:
+                    path.append(n)
+                    n = parents[n]
+ 
+                path.append(start_node)
+ 
+                path.reverse()
+ 
+                print('Path found: {}'.format(path))
+                return path
+ 
+ 
+            # remove n from the open_list, and add it to closed_list
+            # because all of his neighbors were inspected
+            open_set.remove(n)
+            closed_set.add(n)
+ 
+        print('Path does not exist!')
+        return None
+         
+#define fuction to return neighbor and its distance
+#from the passed node
+def get_neighbors(v):
+    if v in Graph_nodes:
+        return Graph_nodes[v]
+    else:
+        return None
+#for simplicity we ll consider heuristic distances given
+#and this function returns heuristic distance for all nodes
+def heuristic(n):
+        H_dist = {
+            'A': 11,
+            'B': 6,
+            'C': 99,
+            'D': 1,
+            'E': 7,
+            'G': 0,
+             
+        }
+ 
+        return H_dist[n]
+ 
+#Describe your graph here  
+Graph_nodes = {
+    'A': [('B', 2), ('E', 3)],
+    'B': [('C', 1),('G', 9)],
+    'C': None,
+    'E': [('D', 6)],
+    'D': [('G', 1)],
+     
+}
+aStarAlgo('A', 'G')
+
+
+
+DFS PROBLEM
+ANS
+class Graph:
+    def __init__(self):
+        self.graph = {}
+
+    def add_edge(self, u, v):
+        if u not in self.graph:
+            self.graph[u] = []
+        self.graph[u].append(v)
+
+    def dfs(self, start, visited=None):
+        if visited is None:
+            visited = set()
+        visited.add(start)
+        print(start, end=' ')
+
+        for neighbor in self.graph.get(start, []):
+            if neighbor not in visited:
+                self.dfs(neighbor, visited)
+
+# Example usage:
+if __name__ == "__main__":
+    graph = Graph()
+
+    # Adding edges to the graph
+    graph.add_edge(0, 1)
+    graph.add_edge(0, 2)
+    graph.add_edge(1, 2)
+    graph.add_edge(2, 0)
+    graph.add_edge(2, 3)
+    graph.add_edge(3, 7)
+
+    start_vertex = 0
+    print("DFS starting from vertex {}: ".format(start_vertex))
+    graph.dfs(start_vertex)
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
